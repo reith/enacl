@@ -98,7 +98,9 @@
 	crypto_hash/1,
 	crypto_hash_b/1,
 	crypto_verify_16/2,
-	crypto_verify_32/2
+	crypto_verify_32/2,
+	crypto_hash_sha256/1,
+	crypto_hash_sha512/1
 ]).
 
 %% Access to the RNG
@@ -202,6 +204,8 @@ crypto_hash(Input) when is_binary(Input) -> erlang:nif_error(nif_not_loaded).
 crypto_hash_b(Input) when is_binary(Input) -> erlang:nif_error(nif_not_loaded).
 crypto_verify_16(_X, _Y) -> erlang:nif_error(nif_not_loaded).
 crypto_verify_32(_X, _Y) -> erlang:nif_error(nif_not_loaded).
+crypto_hash_sha256(Input) when is_binary(Input) -> erlang:nif_error(nif_not_loaded).
+crypto_hash_sha512(Input) when is_binary(Input) -> erlang:nif_error(nif_not_loaded).
 
 randombytes(_RequestedSize) -> erlang:nif_error(nif_not_loaded).
 randombytes_b(_RequestedSize) -> erlang:nif_error(nif_not_loaded).

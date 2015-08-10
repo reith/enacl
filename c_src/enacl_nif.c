@@ -81,6 +81,43 @@ ERL_NIF_TERM enif_crypto_verify_32(ErlNifEnv *env, int argc, ERL_NIF_TERM const 
 	}
 }
 
+static
+ERL_NIF_TERM enif_crypto_hash_sha256(ErlNifEnv *env, int argc, ERL_NIF_TERM const argv[]) {
+	ErlNifBinary input;
+	ErlNifBinary result;
+
+	if ((argc != 1) || (!enif_inspect_iolist_as_binary(env, argv[0], &input))) {
+		return enif_make_badarg(env);
+	}
+
+	if (!enif_alloc_binary(crypto_hash_sha256_BYTES, &result)) {
+		return nacl_error_tuple(env, "alloc_failed");
+	}
+
+	crypto_hash_sha256(result.data, input.data, input.size);
+
+	return enif_make_binary(env, &result);
+}
+
+static
+ERL_NIF_TERM enif_crypto_hash_sha512(ErlNifEnv *env, int argc, ERL_NIF_TERM const argv[]) {
+	ErlNifBinary input;
+	ErlNifBinary result;
+
+	if ((argc != 1) || (!enif_inspect_iolist_as_binary(env, argv[0], &input))) {
+		return enif_make_badarg(env);
+	}
+
+	if (!enif_alloc_binary(crypto_hash_sha512_BYTES, &result)) {
+		return nacl_error_tuple(env, "alloc_failed");
+	}
+
+	crypto_hash_sha512(result.data, input.data, input.size);
+
+	return enif_make_binary(env, &result);
+}
+
+
 /* Curve 25519 */
 static
 ERL_NIF_TERM enif_crypto_curve25519_scalarmult(ErlNifEnv *env, int argc, ERL_NIF_TERM const argv[]) {
@@ -1061,6 +1098,9 @@ static ErlNifFunc nif_funcs[] = {
 	{"crypto_hash", 1, enif_crypto_hash, ERL_NIF_DIRTY_JOB_CPU_BOUND},
 	{"crypto_verify_16", 2, enif_crypto_verify_16},
 	{"crypto_verify_32", 2, enif_crypto_verify_32},
+	{"crypto_hash_sha256", 1, enif_crypto_hash_sha256, ERL_NIF_DIRTY_JOB_CPU_BOUND},
+	{"crypto_hash_sha512", 1, enif_crypto_hash_sha512, ERL_NIF_DIRTY_JOB_CPU_BOUND},
+
 
 	{"crypto_curve25519_scalarmult", 2, enif_crypto_curve25519_scalarmult},
 
